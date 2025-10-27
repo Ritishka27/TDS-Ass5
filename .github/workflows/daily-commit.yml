@@ -2,21 +2,28 @@ name: Daily Commit Bot
 
 on:
   schedule:
-    - cron: "45 6 * * *"  # runs every day at 06:45 UTC 
+    - cron: "45 6 * * *"   # runs every day at 06:45 UTC
   workflow_dispatch:
+
+permissions:
+  contents: write  # ✅ allow commit and push
 
 jobs:
   daily-commit:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # ✅ ensures we can push changes
 
       - name: Add daily commit marker (24ds3000058@ds.study.iitm.ac.in)
         run: |
-          echo "Last run: $(date -u)" > last_run.txt
+          echo "Run timestamp: $(date -u)" >> daily_log.txt
           git config user.name "GitHub Action Bot"
           git config user.email "action@github.com"
-          git add last_run.txt
-          git commit -m "Automated daily commit: $(date -u)" || echo "No changes to commit"
+          git add daily_log.txt
+          git commit -m "Automated daily commit at $(date -u)" || echo "No changes to commit"
           git push
+
