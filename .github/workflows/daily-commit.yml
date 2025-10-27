@@ -2,7 +2,7 @@ name: Daily Commit Bot
 
 on:
   schedule:
-    - cron: "45 6 * * *"  # runs every day at 06:45 UTC
+    - cron: "45 6 * * *"  # runs every day at 06:45 UTC 
   workflow_dispatch:
 
 jobs:
